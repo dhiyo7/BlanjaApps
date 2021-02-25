@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {connect, useSelector} from 'react-redux';
 import {API_URL} from '@env';
 import axios from 'axios';
@@ -51,8 +51,21 @@ const ListChat = ({navigation}) => {
 
   return (
     <View>
-      {chatList === 0 ? (
-        <Text>Belum ada Chat</Text>
+      {chatList.length === 0 ? (
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Image
+            source={require('../../assets/images/no-product-found.png')}
+            style={{width: 150, height: 150}}
+          />
+          <Text style={{fontSize: 20}}>Oops, your don't have any chat</Text>
+        </View>
       ) : (
         <>
           {chatList.map(({chatroom}, index) => {
@@ -92,7 +105,7 @@ const ListChat = ({navigation}) => {
                         marginLeft: 10,
                         justifyContent: 'center',
                         fontSize: 16,
-                        color: 'gray'
+                        color: 'gray',
                       }}>
                       {chatroom}
                     </Text>

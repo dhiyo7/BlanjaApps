@@ -163,68 +163,88 @@ export default function CatalogeScreen({navigation, route}) {
         </View> */}
       </View>
 
-      <FlatGrid
-        itemDimension={130}
-        data={products}
-        style={styles.gridView}
-        // staticDimension={300}
-        // fixed
-        spacing={10}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('DetailProduct', {
-                itemId: item.id,
-                categories: item.category_name,
-              })
-            }>
-            <View style={[styles.itemContainer, {backgroundColor: '#ffffff'}]}>
-              <View style={{width: '100%', justifyContent: 'center'}}>
-                <Image
-                  source={{
-                    uri: `${API_URL}${JSON.parse(item.product_photo).shift()}`,
-                  }}
-                  resizeMode="center"
-                  style={{
-                    borderRadius: 10,
-                    width: 120,
-                    height: 100,
-                    alignSelf: 'center',
-                  }}
-                />
-              </View>
-              <View style={styles.rating}>
-                <Rating
-                  ratingCount={5}
-                  startingValue={item.rating}
-                  readonly={true}
-                  imageSize={15}
-                  style={{paddingRight: 5}}
-                />
-                <Text children={item.rating} />
-              </View>
+      {products !== undefined ? (
+        <FlatGrid
+          itemDimension={130}
+          data={products}
+          style={styles.gridView}
+          // staticDimension={300}
+          // fixed
+          spacing={10}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('DetailProduct', {
+                  itemId: item.id,
+                  categories: item.category_name,
+                })
+              }>
               <View
-                sytle={{
-                  width: '100%',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  marginVertical: 5,
-                }}>
-                <Text style={styles.itemName}>{item.product_name}</Text>
+                style={[styles.itemContainer, {backgroundColor: '#ffffff'}]}>
+                <View style={{width: '100%', justifyContent: 'center'}}>
+                  <Image
+                    source={{
+                      uri: `${API_URL}${JSON.parse(
+                        item.product_photo,
+                      ).shift()}`,
+                    }}
+                    resizeMode="center"
+                    style={{
+                      borderRadius: 10,
+                      width: 120,
+                      height: 100,
+                      alignSelf: 'center',
+                    }}
+                  />
+                </View>
+                <View style={styles.rating}>
+                  <Rating
+                    ratingCount={5}
+                    startingValue={item.rating}
+                    readonly={true}
+                    imageSize={15}
+                    style={{paddingRight: 5}}
+                  />
+                  <Text children={item.rating} />
+                </View>
+                <View
+                  sytle={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    marginVertical: 5,
+                  }}>
+                  <Text style={styles.itemName}>{item.product_name}</Text>
+                </View>
+                <View
+                  sytle={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    marginVertical: 5,
+                  }}>
+                  <Text style={styles.itemCode}>Rp.{item.product_price}</Text>
+                </View>
               </View>
-              <View
-                sytle={{
-                  width: '100%',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  marginVertical: 5,
-                }}>
-                <Text style={styles.itemCode}>Rp.{item.product_price}</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+            </TouchableOpacity>
+          )}
+        />
+      ) : (
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Image
+            source={require('../../assets/images/no-product-found.png')}
+            style={{width: 150, height: 150}}
+          />
+          <Text style={{fontSize: 20}}>Oops, product not found!</Text>
+        </View>
+      )}
       {/* <Button
         style={styles.button}
         title="Go to BottomSheet"

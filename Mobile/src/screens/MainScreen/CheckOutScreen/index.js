@@ -43,6 +43,8 @@ const CheckOut = ({checkout, clearCart, navigation, route}) => {
 
   const channel = 'notification';
 
+  const pic = 'https://res.cloudinary.com/devloops7/image/upload/v1606499947/newBlanja/VectorlogoKecil_ijoj9p.png'
+
   const token = useSelector((state) => state.authReducer.token);
 
   useEffect(() => {
@@ -54,6 +56,8 @@ const CheckOut = ({checkout, clearCart, navigation, route}) => {
         soundName: 'default',
         importance: 4,
         vibrate: true,
+        largeIconUrl: pic, // (optional) default: "ic_launcher". Use "" for no large icon.
+        bigLargeIconUrl: pic,
       },
       (created) => console.log(`createchannel returned ${created}`),
     );

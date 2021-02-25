@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {Text} from '../../../components/';
 import axios from 'axios';
 import {connect, useSelector} from 'react-redux';
@@ -66,171 +72,183 @@ const MyOrders = ({navigation}) => {
       <ScrollView style={styles.container}>
         {level === 1 ? (
           <>
-            {historyOrders.map(
-              ({
-                id,
-                total,
-                created_at,
-                transaction_code,
-                order_detail,
-                status_order,
-              }) => {
-                return (
-                  <TouchableOpacity
-                    style={styles.card}
-                    onPress={() =>
-                      navigation.navigate('OrderDetails', {itemId: id})
-                    }
-                    key={id}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
-                      <Text
-                        children={`Transaction Code. ${transaction_code}`}
-                        size="l"
-                        type="Bold"
-                        style={styles.textOrder}
-                      />
-                      <Text
-                        children={moment(created_at).format('DD-MM-YYYY')}
-                        size="m"
-                        color="gray"
-                        style={styles.textOrder}
-                      />
-                    </View>
-                    <View>
-                      {/* <View style={{flexDirection: 'row'}}>
-                    <Text
-                      children="Tracking number: "
-                      style={styles.textOrder}
-                      color="gray"
-                    />
-                    <Text children="IW3475453455" style={styles.textOrder} />
-                  </View> */}
-                      {/* <View style={{flexDirection: 'row'}}>
-                    <Text
-                      children="Tracking number: "
-                      style={styles.textOrder}
-                      color="gray"
-                    />
-                    <Text children="IW3475453455" style={styles.textOrder} />
-                  </View> */}
-                      <View style={{flexDirection: 'row'}}>
-                        <Text
-                          children="Quantity: "
-                          style={styles.textOrder}
-                          color="gray"
-                        />
-                        <Text
-                          children={order_detail.length}
-                          style={styles.textOrder}
-                        />
-                      </View>
-                      <View style={{flexDirection: 'row'}}>
-                        <Text
-                          children="Total amount: "
-                          style={styles.textOrder}
-                          color="gray"
-                        />
-                        <Text
-                          children={`Rp.${total}`}
-                          style={styles.textOrder}
-                        />
-                      </View>
-                    </View>
-                    <View style={{alignItems: 'flex-end'}}>
-                      <Text children={status_order} color="green" />
-                    </View>
-                  </TouchableOpacity>
-                );
-              },
+            {historyOrders.length === 0 ? (
+              <View
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  source={require('../../../assets/images/no-product-found.png')}
+                  style={{width: 150, height: 150}}
+                />
+                <Text style={{fontSize: 20}}>
+                  Oops, your don't have any orders
+                </Text>
+              </View>
+            ) : (
+              <>
+                {historyOrders.map(
+                  ({
+                    id,
+                    total,
+                    created_at,
+                    transaction_code,
+                    order_detail,
+                    status_order,
+                  }) => {
+                    return (
+                      <TouchableOpacity
+                        style={styles.card}
+                        onPress={() =>
+                          navigation.navigate('OrderDetails', {itemId: id})
+                        }
+                        key={id}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <Text
+                            children={`Transaction Code. ${transaction_code}`}
+                            size="l"
+                            type="Bold"
+                            style={styles.textOrder}
+                          />
+                          <Text
+                            children={moment(created_at).format('DD-MM-YYYY')}
+                            size="m"
+                            color="gray"
+                            style={styles.textOrder}
+                          />
+                        </View>
+                        <View>
+                          <View style={{flexDirection: 'row'}}>
+                            <Text
+                              children="Quantity: "
+                              style={styles.textOrder}
+                              color="gray"
+                            />
+                            <Text
+                              children={order_detail.length}
+                              style={styles.textOrder}
+                            />
+                          </View>
+                          <View style={{flexDirection: 'row'}}>
+                            <Text
+                              children="Total amount: "
+                              style={styles.textOrder}
+                              color="gray"
+                            />
+                            <Text
+                              children={`Rp.${total}`}
+                              style={styles.textOrder}
+                            />
+                          </View>
+                        </View>
+                        <View style={{alignItems: 'flex-end'}}>
+                          <Text children={status_order} color="green" />
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  },
+                )}
+              </>
             )}
           </>
         ) : (
           <>
-            {order.map(
-              ({
-                id,
-                total,
-                created_at,
-                transaction_code,
-                order_detail,
-                status_order,
-              }) => {
-                return (
-                  <TouchableOpacity
-                    style={styles.card}
-                    onPress={() =>
-                      navigation.navigate('OrderStatus', {itemId: id})
-                    }
-                    key={id}>
-                    <View
-                      key={id}
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
-                      <Text
-                        children={`Transaction Code. ${transaction_code}`}
-                        size="l"
-                        type="Bold"
-                        style={styles.textOrder}
-                      />
-                      <Text
-                        children={moment(created_at).format('DD-MM-YYYY')}
-                        size="m"
-                        color="gray"
-                        style={styles.textOrder}
-                      />
-                    </View>
-                    <View>
-                      {/* <View style={{flexDirection: 'row'}}>
-                    <Text
-                      children="Tracking number: "
-                      style={styles.textOrder}
-                      color="gray"
-                    />
-                    <Text children="IW3475453455" style={styles.textOrder} />
-                  </View> */}
-                      {/* <View style={{flexDirection: 'row'}}>
-                    <Text
-                      children="Tracking number: "
-                      style={styles.textOrder}
-                      color="gray"
-                    />
-                    <Text children="IW3475453455" style={styles.textOrder} />
-                  </View> */}
-                      <View style={{flexDirection: 'row'}}>
-                        <Text
-                          children="Quantity: "
-                          style={styles.textOrder}
-                          color="gray"
-                        />
-                        <Text
-                          children={order_detail.length}
-                          style={styles.textOrder}
-                        />
-                      </View>
-                      <View style={{flexDirection: 'row'}}>
-                        <Text
-                          children="Total amount: "
-                          style={styles.textOrder}
-                          color="gray"
-                        />
-                        <Text
-                          children={`Rp.${total}`}
-                          style={styles.textOrder}
-                        />
-                      </View>
-                    </View>
-                    <View style={{alignItems: 'flex-end'}}>
-                      <Text children={status_order} color="green" />
-                    </View>
-                  </TouchableOpacity>
-                );
-              },
+            {order.length === 0 ? (
+              <>
+                <View
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Image
+                    source={require('../../../assets/images/no-product-found.png')}
+                    style={{width: 150, height: 150}}
+                  />
+                  <Text style={{fontSize: 20}}>
+                    Oops, your don't have any orders
+                  </Text>
+                </View>
+              </>
+            ) : (
+              <>
+                {order.map(
+                  ({
+                    id,
+                    total,
+                    created_at,
+                    transaction_code,
+                    order_detail,
+                    status_order,
+                  }) => {
+                    return (
+                      <TouchableOpacity
+                        style={styles.card}
+                        onPress={() =>
+                          navigation.navigate('OrderStatus', {itemId: id})
+                        }
+                        key={id}>
+                        <View
+                          key={id}
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <Text
+                            children={`Transaction Code. ${transaction_code}`}
+                            size="l"
+                            type="Bold"
+                            style={styles.textOrder}
+                          />
+                          <Text
+                            children={moment(created_at).format('DD-MM-YYYY')}
+                            size="m"
+                            color="gray"
+                            style={styles.textOrder}
+                          />
+                        </View>
+                        <View>
+                          <View style={{flexDirection: 'row'}}>
+                            <Text
+                              children="Quantity: "
+                              style={styles.textOrder}
+                              color="gray"
+                            />
+                            <Text
+                              children={order_detail.length}
+                              style={styles.textOrder}
+                            />
+                          </View>
+                          <View style={{flexDirection: 'row'}}>
+                            <Text
+                              children="Total amount: "
+                              style={styles.textOrder}
+                              color="gray"
+                            />
+                            <Text
+                              children={`Rp.${total}`}
+                              style={styles.textOrder}
+                            />
+                          </View>
+                        </View>
+                        <View style={{alignItems: 'flex-end'}}>
+                          <Text children={status_order} color="green" />
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  },
+                )}
+              </>
             )}
           </>
         )}
